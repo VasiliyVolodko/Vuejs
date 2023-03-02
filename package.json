@@ -7,14 +7,17 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "storybook": "start-storybook -p 6006"
   },
   "dependencies": {
+    "@svgr/webpack": "^6.5.1",
     "core-js": "^3.8.3",
     "image-webpack-loader": "^8.1.0",
+    "tsconfig-paths-webpack-plugin": "^4.0.0",
     "vue": "^3.2.13",
-    "vue-class-component": "^8.0.0-0"
+    "vue-router": "^4.1.6",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.21.0",
@@ -31,6 +34,7 @@
     "@typescript-eslint/parser": "^5.4.0",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-typescript": "~5.0.0",
     "@vue/cli-plugin-unit-jest": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
@@ -44,11 +48,14 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-storybook": "^0.6.11",
     "eslint-plugin-vue": "^8.0.3",
+    "file-loader": "^6.2.0",
     "jest": "^27.0.5",
     "prettier": "^2.4.1",
+    "svg-vue3-loader": "^1.0.2",
     "ts-jest": "^27.0.4",
     "typescript": "~4.5.5",
     "vue-loader": "^16.8.3",
+    "vue-template-compiler": "^2.7.14",
     "webpack-chain": "^6.5.1"
   }
 }
