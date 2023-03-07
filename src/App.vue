@@ -1,27 +1,27 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <div class="root">
+    <div class="content">
+      <component :is="HeaderComponent"></component>
+      <router-view></router-view>
+      <FooterComponent />
+    </div>
+  </div>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import HelloWorld from "./components/HelloWorld.vue";
-
-@Options({
-  components: {
-    HelloWorld,
-  },
-})
-export default class App extends Vue {}
+<script setup lang="ts">
+import HeaderComponent from "@/components/HeaderComponent.vue";
+import FooterComponent from "@/components/FooterComponent.vue";
 </script>
+<style scoped>
+.root {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+}
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.content {
+  margin: 0 auto;
+  width: 80vw;
+  display: flex;
+  flex-direction: column;
 }
 </style>

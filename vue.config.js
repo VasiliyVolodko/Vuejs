@@ -12,5 +12,16 @@ module.exports = {
         };
         return ret;
       });
+
+    config.module.rules.delete("svg");
+
+    config.module
+      .rule("svg")
+      .test(/\.(svg)(\?.*)?$/)
+      .use("babel-loader")
+      .loader("babel-loader")
+      .end()
+      .use("svg-vue3-loader")
+      .loader("svg-vue3-loader");
   },
 };
