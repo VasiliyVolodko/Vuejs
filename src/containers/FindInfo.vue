@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="wrapper">
-      <p>{{ store.state.movies.length }} movies found</p>
+      <p>{{ store.state.meta.totalMovies }} movies found</p>
       <div class="sorting-filter-group">
         <p class="sort-by">SORT BY</p>
         <ButtonComponent

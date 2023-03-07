@@ -21,8 +21,7 @@
             year
           </p>
           <p class="duration">
-            <span>{{ store.state.detailedMovie?.duration.slice(2, 4) }}</span>
-            min
+            <span>{{ duration }}</span>
           </p>
         </div>
         <p class="description">{{ store.state.detailedMovie?.storyline }}</p>
@@ -39,12 +38,16 @@ import FindContainer from "@/containers/FindContainer.vue";
 import FindInfo from "@/containers/FindInfo.vue";
 import { useStore } from "@/store";
 import { useRoute } from "vue-router";
-import { watch } from "vue";
+import { watch, computed } from "vue";
 
 const route = useRoute();
 const store = useStore();
 
 store.dispatch("fetchSingleMovie", route.params.id);
+
+const duration = computed(() => {
+  return store.state.detailedMovie?.duration.slice(2, 4) + "min";
+});
 
 watch(route, () => store.dispatch("fetchSingleMovie", route.params.id));
 </script>

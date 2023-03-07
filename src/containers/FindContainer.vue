@@ -10,6 +10,7 @@
           :id="movie.id"
         />
       </div>
+      <div v-intersection="downloadMoreMovies" />
     </div>
   </div>
 </template>
@@ -17,9 +18,15 @@
 import FilmCard from "@/components/FilmCard.vue";
 import { useStore } from "@/store";
 import { computed } from "vue";
+
 const store = useStore();
 const movies = computed(() => store.state.movies);
-console.log(movies.value);
+
+const downloadMoreMovies = () => {
+  if (!store.state.isFetching) {
+    store.dispatch("fetchMoreMovies");
+  }
+};
 </script>
 <style scoped>
 .card-container {

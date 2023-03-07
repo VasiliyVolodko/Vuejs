@@ -40,8 +40,6 @@ const props = defineProps<{
 }>();
 
 const value = ref("");
-
-console.log(props);
 </script>
 <style scoped>
 input {
