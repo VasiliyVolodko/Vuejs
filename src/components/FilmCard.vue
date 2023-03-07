@@ -22,7 +22,6 @@ const props = defineProps<{
   year: string;
   id: number;
 }>();
-console.log(props.genres);
 </script>
 <style scoped>
 .poster {

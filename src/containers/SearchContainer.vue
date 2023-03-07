@@ -42,6 +42,7 @@
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import InputComponent from "@/components/InputComponent.vue";
 import { ref } from "vue";
+import axios from "axios";
 
 const searchLine = ref("");
 const isTitleFilter = ref(false);
@@ -51,11 +52,10 @@ const toggleFilter = () => {
 };
 
 const searchButtonHandler = async () => {
-  const res = await fetch(
+  const res = await axios.get(
     `https://tame-erin-pike-toga.cyclic.app/movies?q=${searchLine.value}`
   );
-  const value = await res.json();
-  console.log(value);
+  const value = res.data;
 };
 
 const handleInputChange = (val: string) => {
