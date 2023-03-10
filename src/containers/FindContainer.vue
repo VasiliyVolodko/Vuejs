@@ -23,15 +23,14 @@ const store = useStore();
 const movies = computed(() => store.state.movies);
 
 const downloadMoreMovies = () => {
-  if (!store.state.isFetching) {
-    store.dispatch("fetchMoreMovies");
-  }
+  store.dispatch("fetchMoreMovies");
 };
 </script>
 <style scoped>
 .card-container {
   width: 100%;
   background-color: rgb(47, 47, 47);
+  min-height: 70vh;
 }
 
 .film-list {
