@@ -9,6 +9,7 @@
           height="50px"
           placeholder="Search"
           @value="handleInputChange"
+          @keyup.enter="searchButtonHandler"
         />
         <ButtonComponent
           text="Search"
@@ -24,15 +25,15 @@
           text="TITLE"
           width="80px"
           height="40px"
-          :on-click="toggleFilter"
-          :active="isTitleFilter"
+          :on-click="titleClick"
+          :active="store.state.filters.searchBy === 'title'"
         />
         <ButtonComponent
           text="GENRE"
           width="80px"
           height="40px"
-          :on-click="toggleFilter"
-          :active="!isTitleFilter"
+          :on-click="genreClick"
+          :active="store.state.filters.searchBy === 'genres'"
         />
       </div>
     </div>
@@ -41,25 +42,38 @@
 <script setup lang="ts">
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import InputComponent from "@/components/InputComponent.vue";
-import { ref } from "vue";
 import axios from "axios";
+import { useStore } from "@/store";
 
-const searchLine = ref("");
-const isTitleFilter = ref(false);
+const store = useStore();
 
-const toggleFilter = () => {
-  isTitleFilter.value = !isTitleFilter.value;
+const genreClick = () => {
+  store.commit("setFilters", {
+    ...store.state.filters,
+    _page: 1,
+    searchBy: "genres",
+  });
+  store.dispatch("fetchMovies");
+};
+
+const titleClick = () => {
+  store.commit("setFilters", {
+    ...store.state.filters,
+    _page: 1,
+    searchBy: "title",
+  });
+  store.dispatch("fetchMovies");
 };
 
 const searchButtonHandler = async () => {
-  const res = await axios.get(
-    `https://tame-erin-pike-toga.cyclic.app/movies?q=${searchLine.value}`
-  );
-  const value = res.data;
+  store.dispatch("fetchMovies");
 };
 
 const handleInputChange = (val: string) => {
-  searchLine.value = val;
+  store.commit("setFilters", {
+    ...store.state.filters,
+    searchField: val,
+  });
 };
 </script>
 <style scoped>

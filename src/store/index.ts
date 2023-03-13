@@ -29,10 +29,16 @@ export interface State {
     _limit: number;
     searchField: string;
     _order: "asc" | "desc";
-    _sort: string;
+    _sort: "releaseDate" | "imdbRating";
+    searchBy: "title" | "genres";
   };
   meta: {
     totalMovies: number;
+  };
+  history: {
+    params: {
+      id: number | null;
+    };
   };
 }
 
@@ -48,10 +54,16 @@ export const store = createStore<State>({
       _limit: 12,
       searchField: "",
       _order: "asc",
-      _sort: "",
+      _sort: "releaseDate",
+      searchBy: "title",
     },
     meta: {
       totalMovies: 0,
+    },
+    history: {
+      params: {
+        id: null,
+      },
     },
   },
   mutations: {
@@ -70,6 +82,14 @@ export const store = createStore<State>({
     setMeta(state: State, meta: State["meta"]) {
       state.meta = meta;
     },
+    setHistory(state: State, history: State["history"]) {
+      state.history = history;
+    },
+  },
+  getters: {
+    getSingleMovie(state: State) {
+      return state.movies.find((movie) => movie.id == state.history.params.id);
+    },
   },
   actions: {
     async fetchMovies({ commit, state }) {
@@ -83,7 +103,7 @@ export const store = createStore<State>({
               _limit: state.filters._limit,
               _sort: state.filters._sort,
               _order: state.filters._order,
-              q: state.filters.searchField,
+              [`${state.filters.searchBy}_like`]: state.filters.searchField,
             },
           }
         );
@@ -112,28 +132,36 @@ export const store = createStore<State>({
       }
     },
     async fetchMoreMovies({ commit, state }) {
-      try {
-        const newFilters = {
-          ...state.filters,
-          _page: state.filters._page + 1,
-        };
-        console.log(newFilters);
-        commit("setFilters", newFilters);
-        commit("setIsFetching", true);
-        const response = await axios.get(
-          "https://tame-erin-pike-toga.cyclic.app/movies",
-          {
-            params: {
-              _page: state.filters._page,
-              _limit: state.filters._limit,
-            },
-          }
-        );
-        commit("setMovies", [...state.movies, ...response.data]);
-      } catch (e) {
-        console.log(e);
-      } finally {
-        commit("setIsFetching", false);
+      if (
+        !state.isFetching &&
+        state.filters._page < state.meta.totalMovies / state.filters._limit
+      ) {
+        try {
+          const newFilters = {
+            ...state.filters,
+            _page: state.filters._page + 1,
+          };
+          console.log(newFilters);
+          commit("setFilters", newFilters);
+          commit("setIsFetching", true);
+          const response = await axios.get(
+            "https://tame-erin-pike-toga.cyclic.app/movies",
+            {
+              params: {
+                _page: state.filters._page,
+                _limit: state.filters._limit,
+                _sort: state.filters._sort,
+                _order: state.filters._order,
+                [`${state.filters.searchBy}_like`]: state.filters.searchField,
+              },
+            }
+          );
+          commit("setMovies", [...state.movies, ...response.data]);
+        } catch (e) {
+          console.log(e);
+        } finally {
+          commit("setIsFetching", false);
+        }
       }
     },
   },

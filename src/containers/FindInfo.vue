@@ -5,18 +5,18 @@
       <div class="sorting-filter-group">
         <p class="sort-by">SORT BY</p>
         <ButtonComponent
-          text="TITLE"
-          width="80px"
+          text="RELEASE DATE"
+          width="200px"
           height="40px"
-          :on-click="toggleFilter"
-          :active="isTitleFilter"
+          :on-click="releaseClick"
+          :active="filter === 'releaseDate'"
         />
         <ButtonComponent
-          text="GENRE"
-          width="80px"
+          text="RATING"
+          width="100px"
           height="40px"
-          :on-click="toggleFilter"
-          :active="!isTitleFilter"
+          :on-click="ratingClick"
+          :active="filter === 'imdbRating'"
         />
       </div>
     </div>
@@ -26,10 +26,28 @@
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import { useStore } from "@/store";
 import { ref } from "vue";
-const isTitleFilter = ref(false);
+import type { Ref } from "vue";
 
-const toggleFilter = () => {
-  isTitleFilter.value = !isTitleFilter.value;
+const filter: Ref<"releaseDate" | "imdbRating"> = ref("releaseDate");
+
+const releaseClick = () => {
+  filter.value = "releaseDate";
+  store.commit("setFilters", {
+    ...store.state.filters,
+    _page: 1,
+    _sort: "releaseDate",
+  });
+  store.dispatch("fetchMovies");
+};
+
+const ratingClick = () => {
+  filter.value = "imdbRating";
+  store.commit("setFilters", {
+    ...store.state.filters,
+    _page: 1,
+    _sort: "rating",
+  });
+  store.dispatch("fetchMovies");
 };
 
 const store = useStore();

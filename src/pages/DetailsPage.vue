@@ -1,30 +1,26 @@
 <template>
   <div class="info-container">
     <div class="info-wrapper">
-      <img
-        v-if="!store.state.isFetching"
-        :src="store.state.detailedMovie?.posterurl"
-        alt="NO IMG"
-      />
+      <img v-if="!store.state.isFetching" :src="movie.posterurl" alt="NO IMG" />
       <div v-else class="loading">Loading...</div>
       <div class="detailed-info">
         <div class="title">
-          <p class="title-name">{{ store.state.detailedMovie?.title }}</p>
-          <div class="rating">{{ store.state.detailedMovie?.imdbRating }}</div>
+          <p class="title-name">{{ movie.title }}</p>
+          <div class="rating">{{ movie.imdbRating }}</div>
         </div>
         <div class="genres">
-          {{ store.state.detailedMovie?.genres.join(" & ") }}
+          {{ movie.genres.join(" & ") }}
         </div>
         <div class="film-year-duration">
           <p class="year">
-            <span>{{ store.state.detailedMovie?.year }}</span>
+            <span>{{ movie.year }}</span>
             year
           </p>
           <p class="duration">
             <span>{{ duration }}</span>
           </p>
         </div>
-        <p class="description">{{ store.state.detailedMovie?.storyline }}</p>
+        <p class="description">{{ movie.storyline }}</p>
       </div>
     </div>
   </div>
@@ -38,15 +34,17 @@ import FindContainer from "@/containers/FindContainer.vue";
 import FindInfo from "@/containers/FindInfo.vue";
 import { useStore } from "@/store";
 import { useRoute } from "vue-router";
-import { watch, computed } from "vue";
+import { watch, computed, ComputedRef } from "vue";
+
+import type { TMovie } from "@/store";
 
 const route = useRoute();
 const store = useStore();
 
-store.dispatch("fetchSingleMovie", route.params.id);
+const movie: ComputedRef<TMovie> = computed(() => store.getters.getSingleMovie);
 
 const duration = computed(() => {
-  return store.state.detailedMovie?.duration.slice(2, 4) + "min";
+  return movie.value.duration.slice(2, -1) + "min";
 });
 
 watch(route, () => store.dispatch("fetchSingleMovie", route.params.id));

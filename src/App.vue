@@ -1,7 +1,7 @@
 <template>
   <div class="root">
     <div class="content">
-      <component :is="HeaderComponent"></component>
+      <HeaderComponent />
       <router-view></router-view>
       <FooterComponent />
     </div>

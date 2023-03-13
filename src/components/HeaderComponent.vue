@@ -1,9 +1,8 @@
 <template>
   <div class="header-wrapper">
     <h1 @click="$router.push('/')"><b>netflix</b>roulette</h1>
-    <component
+    <SearchIcon
       @click="$router.push('/')"
-      :is="SearchIcon"
       class="search-icon"
       v-if="$route.name !== 'home'"
     />
