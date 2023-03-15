@@ -1,7 +1,7 @@
 import { mount } from "@vue/test-utils";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 
-describe("HelloWorld.vue", () => {
+describe("ButtonComponent.vue", () => {
   let defaultProps: InstanceType<typeof ButtonComponent>
 
   beforeEach(() => {

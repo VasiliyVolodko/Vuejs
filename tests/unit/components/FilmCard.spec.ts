@@ -1,7 +1,7 @@
 import { mount } from "@vue/test-utils";
 import FilmCard from "@/components/FilmCard.vue";
 
-describe("HelloWorld.vue", () => {
+describe("FilmCard.vue", () => {
   let defaultProps: InstanceType<typeof FilmCard>
 
   beforeEach(() => {
