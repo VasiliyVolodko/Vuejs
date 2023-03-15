@@ -25,15 +25,15 @@
           text="TITLE"
           width="80px"
           height="40px"
-          :on-click="titleClick"
-          :active="store.state.filters.searchBy === 'title'"
+          :on-click="() => handleClick('title')"
+          :active="isTitleSearchBy"
         />
         <ButtonComponent
           text="GENRE"
           width="80px"
           height="40px"
-          :on-click="genreClick"
-          :active="store.state.filters.searchBy === 'genres'"
+          :on-click="() => handleClick('genres')"
+          :active="!isTitleSearchBy"
         />
       </div>
     </div>
@@ -42,27 +42,26 @@
 <script setup lang="ts">
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import InputComponent from "@/components/InputComponent.vue";
-import axios from "axios";
 import { useStore } from "@/store";
+import { computed } from "vue";
 
 const store = useStore();
 
-const genreClick = () => {
-  store.commit("setFilters", {
-    ...store.state.filters,
-    _page: 1,
-    searchBy: "genres",
-  });
-  store.dispatch("fetchMovies");
-};
+const isTitleSearchBy = computed(
+  () => store.state.filters.searchBy === "title"
+);
 
-const titleClick = () => {
-  store.commit("setFilters", {
-    ...store.state.filters,
-    _page: 1,
-    searchBy: "title",
-  });
-  store.dispatch("fetchMovies");
+const handleClick = (searchBy: "genres" | "title") => {
+  if (store.state.filters.searchBy !== searchBy) {
+    store.dispatch("updateFilters", {
+      ...store.state.filters,
+      _page: 1,
+      searchBy,
+    });
+    if (store.state.filters.searchField) {
+      store.dispatch("fetchMovies");
+    }
+  }
 };
 
 const searchButtonHandler = async () => {
@@ -70,7 +69,7 @@ const searchButtonHandler = async () => {
 };
 
 const handleInputChange = (val: string) => {
-  store.commit("setFilters", {
+  store.dispatch("updateFilters", {
     ...store.state.filters,
     searchField: val,
   });

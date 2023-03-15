@@ -92,6 +92,9 @@ export const store = createStore<State>({
     },
   },
   actions: {
+    updateFilters({ commit }, filters: State["filters"]) {
+      commit("setFilters", filters);
+    },
     async fetchMovies({ commit, state }) {
       try {
         commit("setIsFetching", true);

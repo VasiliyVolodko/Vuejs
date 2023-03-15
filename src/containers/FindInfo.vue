@@ -8,15 +8,15 @@
           text="RELEASE DATE"
           width="200px"
           height="40px"
-          :on-click="releaseClick"
-          :active="filter === 'releaseDate'"
+          :on-click="() => handleClick('releaseDate')"
+          :active="isReleaseFilter"
         />
         <ButtonComponent
           text="RATING"
           width="100px"
           height="40px"
-          :on-click="ratingClick"
-          :active="filter === 'imdbRating'"
+          :on-click="() => handleClick('imdbRating')"
+          :active="!isReleaseFilter"
         />
       </div>
     </div>
@@ -25,32 +25,25 @@
 <script setup lang="ts">
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import { useStore } from "@/store";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import type { Ref } from "vue";
 
 const filter: Ref<"releaseDate" | "imdbRating"> = ref("releaseDate");
-
-const releaseClick = () => {
-  filter.value = "releaseDate";
-  store.commit("setFilters", {
-    ...store.state.filters,
-    _page: 1,
-    _sort: "releaseDate",
-  });
-  store.dispatch("fetchMovies");
-};
-
-const ratingClick = () => {
-  filter.value = "imdbRating";
-  store.commit("setFilters", {
-    ...store.state.filters,
-    _page: 1,
-    _sort: "rating",
-  });
-  store.dispatch("fetchMovies");
-};
-
 const store = useStore();
+
+const isReleaseFilter = computed(() => filter.value === "releaseDate");
+
+const handleClick = (filterValue: "releaseDate" | "imdbRating") => {
+  if (filter.value !== filterValue) {
+    filter.value = filterValue;
+    store.dispatch("updateFilters", {
+      ...store.state.filters,
+      _page: 1,
+      _sort: filterValue,
+    });
+    store.dispatch("fetchMovies");
+  }
+};
 </script>
 <style scoped>
 .sorting-filter-group {
