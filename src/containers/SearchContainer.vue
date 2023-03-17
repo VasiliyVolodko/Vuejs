@@ -9,6 +9,7 @@
           height="50px"
           placeholder="Search"
           @value="handleInputChange"
+          @keyup.enter="searchButtonHandler"
         />
         <ButtonComponent
           text="Search"
@@ -24,15 +25,15 @@
           text="TITLE"
           width="80px"
           height="40px"
-          :on-click="toggleFilter"
-          :active="isTitleFilter"
+          :on-click="() => handleClick('title')"
+          :active="isTitleSearchBy"
         />
         <ButtonComponent
           text="GENRE"
           width="80px"
           height="40px"
-          :on-click="toggleFilter"
-          :active="!isTitleFilter"
+          :on-click="() => handleClick('genres')"
+          :active="!isTitleSearchBy"
         />
       </div>
     </div>
@@ -41,25 +42,37 @@
 <script setup lang="ts">
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import InputComponent from "@/components/InputComponent.vue";
-import { ref } from "vue";
-import axios from "axios";
+import { useStore } from "@/store";
+import { computed } from "vue";
 
-const searchLine = ref("");
-const isTitleFilter = ref(false);
+const store = useStore();
 
-const toggleFilter = () => {
-  isTitleFilter.value = !isTitleFilter.value;
+const isTitleSearchBy = computed(
+  () => store.state.filters.searchBy === "title"
+);
+
+const handleClick = (searchBy: "genres" | "title") => {
+  if (store.state.filters.searchBy !== searchBy) {
+    store.dispatch("updateFilters", {
+      ...store.state.filters,
+      _page: 1,
+      searchBy,
+    });
+    if (store.state.filters.searchField) {
+      store.dispatch("fetchMovies");
+    }
+  }
 };
 
 const searchButtonHandler = async () => {
-  const res = await axios.get(
-    `https://tame-erin-pike-toga.cyclic.app/movies?q=${searchLine.value}`
-  );
-  const value = res.data;
+  store.dispatch("fetchMovies");
 };
 
 const handleInputChange = (val: string) => {
-  searchLine.value = val;
+  store.dispatch("updateFilters", {
+    ...store.state.filters,
+    searchField: val,
+  });
 };
 </script>
 <style scoped>
