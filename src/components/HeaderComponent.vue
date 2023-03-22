@@ -1,11 +1,11 @@
 <template>
   <div class="header-wrapper">
-    <h1 @click="$router.push('/')"><b>netflix</b>roulette</h1>
-    <SearchIcon
-      @click="$router.push('/')"
-      class="search-icon"
-      v-if="$route.name !== 'home'"
-    />
+    <RouterLink to="/">
+      <h1><b>netflix</b>roulette</h1>
+    </RouterLink>
+    <RouterLink to="/">
+      <SearchIcon class="search-icon" v-if="$route.name !== 'home'" />
+    </RouterLink>
   </div>
 </template>
 <script setup lang="ts">

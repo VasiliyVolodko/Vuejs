@@ -12,7 +12,11 @@
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import FooterComponent from "@/components/FooterComponent.vue";
 </script>
-<style scoped>
+<style>
+a {
+  text-decoration: none;
+}
+
 .root {
   width: 100%;
   background-color: rgba(0, 0, 0, 0.3);
