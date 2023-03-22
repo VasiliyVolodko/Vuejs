@@ -1,11 +1,8 @@
 <template>
   <div class="wrapper">
-    <img
-      @click="$router.push(`/details/${id}`)"
-      class="poster"
-      :src="url"
-      alt="No IMG"
-    />
+    <RouterLink :to="`/details/${id}`">
+      <img class="poster" :src="url" alt="No IMG" />
+    </RouterLink>
     <div class="film-info">
       <p class="title">{{ title }}</p>
       <p class="year">{{ year }}</p>
@@ -38,6 +35,7 @@ const props = defineProps<{
   flex-direction: column;
   color: rgb(219, 219, 219);
 }
+
 p {
   margin: 6px;
 }

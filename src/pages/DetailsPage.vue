@@ -31,7 +31,6 @@
 </template>
 <script setup lang="ts">
 import FindContainer from "@/containers/FindContainer.vue";
-import FindInfo from "@/containers/FindInfo.vue";
 import { useStore } from "@/store";
 import { useRoute } from "vue-router";
 import { watch, computed, ComputedRef } from "vue";

@@ -2,7 +2,7 @@ import { mount } from "@vue/test-utils";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 
 describe("ButtonComponent.vue", () => {
-  let defaultProps: InstanceType<typeof ButtonComponent>
+  let defaultProps: InstanceType<typeof ButtonComponent>;
 
   beforeEach(() => {
     defaultProps = {
@@ -11,13 +11,13 @@ describe("ButtonComponent.vue", () => {
       active: false,
       width: "100px",
       height: "80px",
-      onClick: jest.fn()
-    }
-  })
+      onClick: jest.fn(),
+    };
+  });
   it("renders button with correct text", () => {
     const wrapper = mount(ButtonComponent, {
       props: {
-        ...defaultProps
+        ...defaultProps,
       },
     });
     expect(wrapper.text()).toMatch(defaultProps.text);
@@ -26,10 +26,10 @@ describe("ButtonComponent.vue", () => {
   it("should call onClick prop on click", () => {
     const wrapper = mount(ButtonComponent, {
       props: {
-        ...defaultProps
+        ...defaultProps,
       },
     });
-    wrapper.find('button').trigger('click');
+    wrapper.find("button").trigger("click");
     expect(defaultProps.onClick).toBeCalled();
   });
 
@@ -37,10 +37,10 @@ describe("ButtonComponent.vue", () => {
     const wrapper = mount(ButtonComponent, {
       props: {
         ...defaultProps,
-        disabled: true
+        disabled: true,
       },
     });
-    wrapper.find('button').trigger('click');
+    wrapper.find("button").trigger("click");
     expect(defaultProps.onClick).not.toBeCalled();
   });
 });
